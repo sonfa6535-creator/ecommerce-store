@@ -100,7 +100,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const handleAddToCart = () => {
     if (!session) {
-      setMessage("Please login to add items to cart");
+      // Silent fail - no message shown
       setTimeout(() => router.push("/login"), 2000);
       return;
     }
@@ -113,8 +113,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     cart[product.id] = (cart[product.id] || 0) + quantity;
     localStorage.setItem("cart", JSON.stringify(cart));
     
-    setMessage(`Added ${quantity} item(s) to cart!`);
-    setTimeout(() => setMessage(""), 2000);
+    // Silent operation - no message shown
   };
 
   if (loading) {
@@ -160,17 +159,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             Back to shop
           </Link>
         </div>
-
-        {message && (
-          <div className="mb-6 animate-bounce-in">
-            <div className="bg-gradient-to-r from-green-400 to-green-500 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl shadow-lg">
-              <p className="flex items-center text-sm sm:text-base">
-                <span className="text-xl sm:text-2xl mr-2">✅</span>
-                {message}
-              </p>
-            </div>
-          </div>
-        )}
 
         {/* Product Detail Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">

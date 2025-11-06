@@ -56,7 +56,7 @@ export default function HomePage() {
 
   const addToCart = (productId: string) => {
     if (!session) {
-      setMessage("Please login to add items to cart");
+      // Silent fail - no message shown
       return;
     }
 
@@ -87,13 +87,13 @@ export default function HomePage() {
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-4 sm:py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 py-4 sm:py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-6 sm:mb-10 animate-slide-up">
+        <div className="mb-6 sm:mb-10 animate-slide-up welcome-container">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-3">
             {t('welcomeStore')}
           </h1>
-          <p className="text-gray-600 text-base sm:text-lg mb-6">{t('discoverProducts')} 🛍️</p>
+          <p className="text-gray-600 dark:text-white text-base sm:text-lg mb-6">{t('discoverProducts')} 🛍️</p>
           
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto">
@@ -133,15 +133,6 @@ export default function HomePage() {
           </div>
         </div>
 
-      {message && (
-        <div className="bg-gradient-to-r from-green-400 to-green-500 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl mb-6 shadow-lg animate-bounce-in">
-          <p className="flex items-center text-sm sm:text-base">
-            <span className="text-xl sm:text-2xl mr-2">✅</span>
-            {message}
-          </p>
-        </div>
-      )}
-
       {!session && (
         <div className="bg-gradient-to-r from-blue-400 to-indigo-500 text-white px-4 sm:px-6 py-4 rounded-xl mb-6 shadow-lg animate-slide-up">
           <p className="text-sm sm:text-base">
@@ -176,7 +167,7 @@ export default function HomePage() {
               <h2 className="text-lg sm:text-xl font-bold mb-2 text-gray-800 group-hover:text-blue-600 transition">
                 {product.name}
               </h2>
-              <p className="text-gray-600 mb-4 text-sm sm:text-base line-clamp-2">{product.description}</p>
+              <p className="text-gray-600 dark:text-white mb-4 text-sm sm:text-base line-clamp-2">{product.description}</p>
               <div className="flex justify-between items-center mb-4">
                 <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
                   ${product.price.toFixed(2)}

@@ -162,21 +162,21 @@ export default function AdminDashboard() {
               Quick Stats
             </h2>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-xl">
-                <span className="text-sm sm:text-base font-medium text-gray-700">Pending</span>
-                <span className="text-xl sm:text-2xl font-bold text-yellow-600">{stats.pendingOrders}</span>
+              <div className="flex items-center justify-between p-3 rounded-xl" style={{backgroundColor: '#F59E0B'}}>
+                <span className="text-sm sm:text-base font-medium text-white">Pending</span>
+                <span className="text-xl sm:text-2xl font-bold text-white">{stats.pendingOrders}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl">
-                <span className="text-sm sm:text-base font-medium text-gray-700">Paid</span>
-                <span className="text-xl sm:text-2xl font-bold text-green-600">{stats.paidOrders}</span>
+              <div className="flex items-center justify-between p-3 rounded-xl" style={{backgroundColor: '#059669'}}>
+                <span className="text-sm sm:text-base font-medium text-white">Paid</span>
+                <span className="text-xl sm:text-2xl font-bold text-white">{stats.paidOrders}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-blue-50 rounded-xl">
-                <span className="text-sm sm:text-base font-medium text-gray-700">Shipped</span>
-                <span className="text-xl sm:text-2xl font-bold text-blue-600">{stats.shippedOrders}</span>
+              <div className="flex items-center justify-between p-3 rounded-xl" style={{backgroundColor: '#2563EB'}}>
+                <span className="text-sm sm:text-base font-medium text-white">Shipped</span>
+                <span className="text-xl sm:text-2xl font-bold text-white">{stats.shippedOrders}</span>
               </div>
-              <div className="flex items-center justify-between p-3 bg-purple-50 rounded-xl">
-                <span className="text-sm sm:text-base font-medium text-gray-700">Delivered</span>
-                <span className="text-xl sm:text-2xl font-bold text-purple-600">{stats.deliveredOrders}</span>
+              <div className="flex items-center justify-between p-3 rounded-xl" style={{backgroundColor: '#7C3AED'}}>
+                <span className="text-sm sm:text-base font-medium text-white">Delivered</span>
+                <span className="text-xl sm:text-2xl font-bold text-white">{stats.deliveredOrders}</span>
               </div>
             </div>
           </div>

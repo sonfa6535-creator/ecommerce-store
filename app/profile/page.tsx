@@ -169,7 +169,7 @@ export default function ProfilePage() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">
             👤 My Profile
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base">Manage your account settings</p>
+          <p className="text-gray-600 dark:text-white text-sm sm:text-base">Manage your account settings</p>
         </div>
 
         {message && (
@@ -241,7 +241,7 @@ export default function ProfilePage() {
 
             {/* Email Field */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
+              <label className="block text-gray-700 dark:text-white font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
                 <span className="text-lg sm:text-xl">📧</span>
                 Email
               </label>
@@ -256,7 +256,7 @@ export default function ProfilePage() {
 
             {/* Name Field */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
+              <label className="block text-gray-700 dark:text-white font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
                 <span className="text-lg sm:text-xl">✏️</span>
                 Name
               </label>
@@ -299,7 +299,7 @@ export default function ProfilePage() {
             <form onSubmit={handleChangePassword} className="space-y-6">
               {/* Current Password */}
               <div>
-                <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
+                <label className="block text-gray-700 dark:text-white font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
                   <span className="text-lg sm:text-xl">🔑</span>
                   Current Password
                 </label>
@@ -317,7 +317,7 @@ export default function ProfilePage() {
 
               {/* New Password */}
               <div>
-                <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
+                <label className="block text-gray-700 dark:text-white font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
                   <span className="text-lg sm:text-xl">🆕</span>
                   New Password
                 </label>
@@ -335,7 +335,7 @@ export default function ProfilePage() {
 
               {/* Confirm Password */}
               <div>
-                <label className="block text-gray-700 font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
+                <label className="block text-gray-700 dark:text-white font-bold mb-2 flex items-center gap-2 text-sm sm:text-base">
                   <span className="text-lg sm:text-xl">✅</span>
                   Confirm New Password
                 </label>

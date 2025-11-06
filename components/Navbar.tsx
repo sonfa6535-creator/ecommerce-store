@@ -48,7 +48,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-3 sm:py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
-            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden group-hover:scale-110 transition-transform shadow-lg">
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-white dark:bg-white rounded-full overflow-hidden group-hover:scale-110 transition-transform shadow-lg">
               <Image 
                 src="/logo.png" 
                 alt="E-Commerce Store Logo" 

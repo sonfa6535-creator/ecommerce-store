@@ -80,25 +80,65 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
   };
 
   const downloadReceipt = async () => {
-    // Use html2canvas to capture the receipt
+    // First try html2canvas
     const receiptElement = document.getElementById('receipt-content');
     if (!receiptElement) return;
 
     try {
       const html2canvas = (await import('html2canvas')).default;
       const canvas = await html2canvas(receiptElement, {
-        scale: 2,
+        scale: 4, // Increased scale for better quality
         logging: false,
         useCORS: true,
+        backgroundColor: '#ffffff', // Ensure white background
+        width: receiptElement.scrollWidth,
+        height: receiptElement.scrollHeight
       });
 
       // Convert to image and download
       const link = document.createElement('a');
       link.download = `receipt-${order?.id.substring(0, 8)}.png`;
-      link.href = canvas.toDataURL();
+      link.href = canvas.toDataURL('image/png', 1.0); // Highest quality PNG
       link.click();
     } catch (error) {
       console.error('Download error:', error);
+      // Fallback to print
+      window.print();
+    }
+  };
+
+  const downloadReceiptAsPDF = async () => {
+    try {
+      // Use jsPDF for better PDF generation
+      const receiptElement = document.getElementById('receipt-content');
+      if (!receiptElement) return;
+
+      const html2canvas = (await import('html2canvas')).default;
+      const jsPDF = await import('jspdf');
+      
+      // Capture the receipt as canvas
+      const canvas = await html2canvas(receiptElement, {
+        scale: 3,
+        logging: false,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      // Create PDF
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF.jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+      });
+      
+      // Add image to PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      
+      // Download PDF
+      pdf.save(`receipt-${order?.id.substring(0, 8)}.pdf`);
+    } catch (error) {
+      console.error('PDF download error:', error);
       // Fallback to print
       window.print();
     }
@@ -191,23 +231,23 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
         </div>
 
         {/* Main Receipt Card */}
-        <div id="receipt-content" className="bg-white rounded-3xl shadow-2xl overflow-hidden animate-scale-in">
+        <div id="receipt-content" className="bg-white rounded-3xl shadow-2xl overflow-hidden animate-scale-in print:shadow-none print:rounded-none print:border-2 print:border-black">
           {/* Gradient Top Bar */}
-          <div className="h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+          <div className="h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 print:hidden"></div>
           
           {/* Receipt Header */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 border-b-4 border-gradient">
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-8 border-b-4 border-gradient print:bg-white print:border-b-4 print:border-black">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-4xl">🧾</span>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">RECEIPT</h2>
+                  <span className="text-4xl print:text-black print:text-3xl">🧾</span>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 print:text-black print:text-2xl">RECEIPT</h2>
                 </div>
-                <p className="text-gray-600">E-Commerce Store</p>
+                <p className="text-gray-600 print:text-gray-800 print:text-lg">E-Commerce Store</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-gray-500 uppercase tracking-wide">Order ID</p>
-                <p className="text-lg font-mono font-bold text-blue-600">#{order.id.substring(0, 12)}</p>
+                <p className="text-xs text-gray-500 uppercase tracking-wide print:text-gray-700 print:text-sm">Order ID</p>
+                <p className="text-lg font-mono font-bold text-blue-600 print:text-black print:text-xl">#{order.id.substring(0, 12)}</p>
               </div>
             </div>
           </div>
@@ -215,12 +255,12 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
           <div className="p-8">
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               {/* Order Info Card */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all hover-lift">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-2xl border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all hover-lift print:bg-white print:border-2 print:border-black print:shadow-none">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl shadow-lg">
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-2xl shadow-lg print:bg-white print:text-black print:border print:border-gray-300">
                     📋
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800">Order Details</h3>
+                  <h3 className="text-xl font-bold text-gray-800 print:text-black">Order Details</h3>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -265,12 +305,12 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
               </div>
 
               {/* Customer Info Card */}
-              <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-6 rounded-2xl border-2 border-purple-200 shadow-lg hover:shadow-xl transition-all hover-lift">
+              <div className="bg-gradient-to-br from-purple-50 to-pink-100 p-6 rounded-2xl border-2 border-purple-200 shadow-lg hover:shadow-xl transition-all hover-lift print:bg-white print:border-2 print:border-black print:shadow-none">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-2xl shadow-lg">
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-2xl shadow-lg print:bg-white print:text-black print:border print:border-gray-300">
                     👤
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800">Customer Info</h3>
+                  <h3 className="text-xl font-bold text-gray-800 print:text-black">Customer Info</h3>
                 </div>
                 <div className="space-y-3">
                   <div>
@@ -291,34 +331,34 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
 
           {/* Order Items */}
           <div className="mb-8">
-            <h2 className="font-bold text-gray-800 mb-4 flex items-center text-lg sm:text-xl">
-              <span className="text-2xl sm:text-3xl mr-2">🛍️</span> Order Items
+            <h2 className="font-bold text-gray-800 mb-4 flex items-center text-lg sm:text-xl print:text-black print:text-xl">
+              <span className="text-2xl sm:text-3xl mr-2 print:text-black">🛍️</span> Order Items
             </h2>
-            <div className="overflow-x-auto rounded-xl border border-gray-200">
+            <div className="overflow-x-auto rounded-xl border border-gray-200 print:border-2 print:border-black">
               <table className="w-full">
-                <thead className="bg-gradient-to-r from-gray-100 to-gray-200">
+                <thead className="bg-gradient-to-r from-gray-100 to-gray-200 print:bg-gray-200 print:border-b-2 print:border-black">
                   <tr>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-bold text-gray-700">Item</th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-center text-xs sm:text-sm font-bold text-gray-700">Qty</th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs sm:text-sm font-bold text-gray-700">Price</th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs sm:text-sm font-bold text-gray-700">Total</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-bold text-gray-700 print:text-black print:text-base print:border-r print:border-gray-400">Item</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-center text-xs sm:text-sm font-bold text-gray-700 print:text-black print:text-base print:border-r print:border-gray-400">Qty</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs sm:text-sm font-bold text-gray-700 print:text-black print:text-base print:border-r print:border-gray-400">Price</th>
+                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-right text-xs sm:text-sm font-bold text-gray-700 print:text-black print:text-base">Total</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-gray-200 print:divide-gray-400 print:border-b-2 print:border-gray-400">
                   {order.orderItems.map((item) => (
-                    <tr key={item.id} className="hover:bg-gray-50 transition">
-                      <td className="px-3 sm:px-6 py-3 sm:py-4">
-                        <div className="text-sm sm:text-base font-medium text-gray-800">{item.product.name}</div>
+                    <tr key={item.id} className="hover:bg-gray-50 transition print:hover:bg-white print:border-b print:border-gray-300">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 print:py-2">
+                        <div className="text-sm sm:text-base font-medium text-gray-800 print:text-black print:text-base">{item.product.name}</div>
                       </td>
-                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center">
-                        <span className="bg-blue-100 text-blue-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-center print:py-2">
+                        <span className="bg-blue-100 text-blue-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold print:bg-white print:text-black print:border print:border-black">
                           {item.quantity}
                         </span>
                       </td>
-                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base text-gray-700">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base text-gray-700 print:text-black print:text-base print:py-2">
                         ${item.price.toFixed(2)}
                       </td>
-                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base font-semibold text-gray-900">
+                      <td className="px-3 sm:px-6 py-3 sm:py-4 text-right text-sm sm:text-base font-semibold text-gray-900 print:text-black print:text-base print:py-2">
                         ${(item.quantity * item.price).toFixed(2)}
                       </td>
                     </tr>
@@ -329,21 +369,21 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
           </div>
 
           {/* Total */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 sm:p-8 border-2 border-blue-200">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 sm:p-8 border-2 border-blue-200 print:bg-white print:border-2 print:border-black">
             <div className="flex justify-end">
               <div className="w-full sm:w-80 space-y-3">
-                <div className="flex justify-between text-sm sm:text-base text-gray-700">
+                <div className="flex justify-between text-sm sm:text-base text-gray-700 print:text-black print:text-lg">
                   <span>Subtotal:</span>
-                  <span className="font-semibold">${order.total.toFixed(2)}</span>
+                  <span className="font-semibold print:text-black print:text-lg">${order.total.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-sm sm:text-base text-gray-700">
+                <div className="flex justify-between text-sm sm:text-base text-gray-700 print:text-black print:text-lg">
                   <span>Tax (0%):</span>
-                  <span className="font-semibold">$0.00</span>
+                  <span className="font-semibold print:text-black print:text-lg">$0.00</span>
                 </div>
-                <div className="border-t-2 border-gray-300 pt-3">
+                <div className="border-t-2 border-gray-300 pt-3 print:border-black">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg sm:text-2xl font-bold text-gray-900">Total:</span>
-                    <span className="text-2xl sm:text-3xl font-bold text-blue-600">${order.total.toFixed(2)}</span>
+                    <span className="text-lg sm:text-2xl font-bold text-gray-900 print:text-black print:text-xl">Total:</span>
+                    <span className="text-2xl sm:text-3xl font-bold text-blue-600 print:text-black print:text-xl">${order.total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -378,7 +418,15 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
             className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 sm:py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
           >
             <span className="text-xl sm:text-2xl">📥</span>
-            Download Receipt
+            Download Image
+          </button>
+
+          <button
+            onClick={downloadReceiptAsPDF}
+            className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 sm:py-4 rounded-xl hover:from-purple-700 hover:to-pink-700 font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+          >
+            <span className="text-xl sm:text-2xl">📄</span>
+            Download PDF
           </button>
 
           <button

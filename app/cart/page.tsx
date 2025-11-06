@@ -252,11 +252,12 @@ export default function CartPage() {
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 text-gray-800 font-medium transition-all hover:border-blue-300 text-sm sm:text-base"
+                  style={{ backgroundColor: '#ffffff', color: '#000000', borderColor: '#333333', fontWeight: 'bold' }}
                 >
-                  <option value="credit_card">💳 Credit Card</option>
-                  <option value="paypal">🅿️ PayPal</option>
-                  <option value="bank_transfer">🏦 Bank Transfer</option>
-                  <option value="cash_on_delivery">💵 Cash on Delivery</option>
+                  <option value="credit_card" style={{ backgroundColor: '#ffffff', color: '#000000', fontWeight: 'bold' }}>💳 Credit Card</option>
+                  <option value="paypal" style={{ backgroundColor: '#ffffff', color: '#000000', fontWeight: 'bold' }}>🅿️ PayPal</option>
+                  <option value="bank_transfer" style={{ backgroundColor: '#ffffff', color: '#000000', fontWeight: 'bold' }}>🏦 Bank Transfer</option>
+                  <option value="cash_on_delivery" style={{ backgroundColor: '#ffffff', color: '#000000', fontWeight: 'bold' }}>💵 Cash on Delivery</option>
                 </select>
               </div>
 

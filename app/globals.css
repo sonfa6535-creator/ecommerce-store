@@ -28,16 +28,92 @@ body {
   background-color: #1e1e1e !important;
 }
 
+/* Logo background stays white in dark mode */
+.dark .bg-white.dark\:bg-white {
+  background-color: #ffffff !important;
+}
+
+/* Make text you type in inputs WHITE in dark mode for readability */
+.dark input:not([type="submit"]):not([type="button"]),
+.dark textarea,
+.dark select {
+  color: #000000 !important;
+}
+
+/* Make placeholder text BLACK in dark mode only */
+.dark input::placeholder,
+.dark textarea::placeholder,
+.dark input::-webkit-input-placeholder,
+.dark textarea::-webkit-input-placeholder,
+.dark input::-moz-placeholder,
+.dark textarea::-moz-placeholder,
+.dark input:-ms-input-placeholder,
+.dark textarea:-ms-input-placeholder {
+  color: #000000 !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Make select elements more visible in dark mode */
+.dark select,
+.dark select option {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #333333 !important;
+  font-weight: bold !important;
+}
+
+/* Keep text BLACK on white/light backgrounds in dark mode for My Orders page */
+.dark .bg-gradient-to-r.from-purple-50 .text-gray-800,
+.dark .bg-gradient-to-r.from-purple-50 .text-gray-600 {
+  color: #0f0f0f !important;
+}
+
+/* Keep text BLACK on light gradient backgrounds for Account Information boxes */
+.dark .from-indigo-50 .text-gray-600,
+.dark .from-purple-50 .text-gray-600,
+.dark .from-indigo-50 .text-sm,
+.dark .from-purple-50 .text-sm {
+  color: #eeebeb !important;
+}
+
+/* Make product descriptions white in dark mode (but not overlays) */
+.dark .p-4 .line-clamp-2,
+.dark .p-6 .line-clamp-2 {
+  color: #ffffff !important;
+}
+
 .dark .text-gray-800 {
-  color: #e0e0e0 !important;
+  color: #ffffff !important;
 }
 
 .dark .text-gray-700 {
-  color: #d0d0d0 !important;
+  color: #ffffff !important;
+}
+
+/* Make sure labels are white even with font-bold */
+.dark label.text-gray-700,
+.dark .text-gray-700.font-bold {
+  color: #ffffff !important;
+}
+
+/* But keep labels in light background boxes black for visibility */
+.dark .from-indigo-50 .text-gray-700,
+.dark .from-purple-50 .text-gray-700 {
+  color: #fcf8f8 !important;
 }
 
 .dark .text-gray-600 {
-  color: #b0b0b0 !important;
+  color: #ffffff !important;
+}
+
+/* Add text-gray-500 and text-gray-400 for labels */
+.dark .text-gray-500 {
+  color: #eee2e2 !important;
+}
+
+.dark .text-gray-400 {
+  color: #000000 !important;
 }
 
 .dark .border-gray-200 {
@@ -58,6 +134,15 @@ body {
 
 .dark .bg-gray-200 {
   background-color: #333 !important;
+}
+
+/* Make welcome text white in dark mode */
+.dark .min-h-screen.bg-gradient-to-br {
+  background: linear-gradient(to bottom right, #1f2937, #111827, #111827) !important;
+}
+
+.dark .welcome-container p {
+  color: #ffffff !important;
 }
 
 @layer utilities {
@@ -198,5 +283,72 @@ body {
   50% {
     opacity: 0.8;
     transform: scale(1.02);
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+  
+  .print\:bg-white {
+    background-color: white !important;
+  }
+  
+  .print\:text-black {
+    color: black !important;
+  }
+  
+  .print\:border {
+    border-width: 2px !important;
+    border-style: solid !important;
+  }
+  
+  .print\:border-gray-300 {
+    border-color: #000000 !important;
+  }
+  
+  .print\:border-gray-400 {
+    border-color: #000000 !important;
+  }
+  
+  .print\:shadow-none {
+    box-shadow: none !important;
+  }
+  
+  .print\:rounded-none {
+    border-radius: 0 !important;
+  }
+  
+  .hidden-print {
+    display: none !important;
+  }
+  
+  /* Ensure all text is black and visible */
+  * {
+    color: black !important;
+    background: white !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  /* Make sure gradients are replaced with solid colors */
+  .bg-gradient-to-r, .bg-gradient-to-br {
+    background: white !important;
+  }
+  
+  /* Ensure table borders are visible */
+  table, th, td {
+    border: 2px solid black !important;
+  }
+  
+  th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
   }
 }
